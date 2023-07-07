@@ -37,9 +37,9 @@ class ExampleApplication(robothub.RobotHubApplication):
 
             nn = device.create_neural_network('yolov6nr3_coco_640x352', input=color)
             nn.stream_to_hub(name=f'NN stream {device.get_device_name()}')
-            nn.add_callback(self.custom_callback)
+            nn.add_callback(self.on_detection)
 
-    def custom_callback(self, packet: HubPacket):
+    def on_detection(self, packet: HubPacket):
         """
         This is an example of a custom callback that can be used to process packets received from the device.
         This method is called for every packet received. The type of the packet depends on the type of the output.
