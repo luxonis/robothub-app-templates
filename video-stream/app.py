@@ -1,58 +1,25 @@
-from typing import Optional
-
 from depthai_sdk import OakCamera
 from robothub_oak import LiveView, BaseApplication
 
 
-class ObjectDetection:
-    """
-    This class is a data processor that will process the output from the pipeline.
-    In this example we use the NN output to detect objects and send an event to the frontend.
-    """
-
-    def __init__(self):
-        self.live_view: Optional[LiveView] = None
- 
-    def process_packets(self, packet):  # This method has to be implemented
-        # Iterate over all detections and add a rectangle to the live view
-        for detection in packet.detections:
-            bbox = [*detection.top_left, *detection.bottom_right]
-            self.live_view.add_rectangle(bbox, label=detection.label)
-
-        # Publish the frame
-        self.live_view.publish(packet.frame)
-
-
 class ExampleApplication(BaseApplication):
     """
-    This is an example application that shows how to use the OakCamera class to create an object detection pipeline.
-    In this example we use the YOLOv6 model to detect objects from the color camera.
+    This is an example application that shows how to use the OakCamera class to create an simple streaming pipeline.
     """
-
-    def __init__(self):
-        super().__init__()  # Add any initialization code here
-        self.object_detection = ObjectDetection()
 
     def setup_pipeline(self, oak: OakCamera):  # This method has to be implemented
         """
-        This method is the entrypoint for each device.
+        This method is the entrypoint for the device. Note: only one device is supported. If multiple devices are
+        connected, this method will be called only once for the first device.
         OakCamera is a class from the DepthAI SDK package that provides a simple interface to create pipelines.
         Documentation for the DepthAI SDK can be found here: https://docs.luxonis.com/projects/sdk/en/latest/.
         """
         color = oak.create_camera(source="color", fps=30, resolution="1080p", encode="mjpeg")
-        nn = oak.create_nn(model='yolov6nr3_coco_640x352', input=color)
 
         # Create a live view for the color camera. This will be displayed in the frontend and RobotHub app
-        live_view = LiveView.create(
+        LiveView.create(
             device=oak,
             component=color,
             unique_key="color_stream",  # Unique key is used to identify the live view in the frontend
-            name="Object detection",  # Stream name
-            manual_publish=True  # We will publish the frame manually in the data processor, disable if you want to stream the raw camera feed
+            name="Color stream",  # Stream name
         )
-
-        # Set live view for NN output processor, so it can publish frames
-        self.object_detection.live_view = live_view
-
-        # Create a callback that will be called when the NN has processed a frame
-        oak.callback(nn.out.main, self.object_detection.process_packets)
