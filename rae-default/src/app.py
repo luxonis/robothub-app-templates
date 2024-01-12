@@ -1,13 +1,12 @@
 import robothub
 import time
 import depthai as dai
-import logging
+import logging as log
 from time import sleep
 import threading
 
 
-from src.robot.robot import Robot
-from src.utils.logging import Log
+from rae_sdk.robot import Robot
 
 def build_pipeline(streams):
     pipeline = dai.Pipeline()
@@ -53,10 +52,8 @@ class Application(robothub.RobotHubApplication):
         super().__init__()
         self.device = None
         self.stream_handles = {}
-        self.available_apps = []
         self.mutex=threading.Lock()
-        self.logger = Log()
-        self.robot = Robot(self.logger)
+        self.robot = None
 
     def on_start(self):
         if not robothub.DEVICES:
@@ -66,12 +63,12 @@ class Application(robothub.RobotHubApplication):
                 "click the \"Reassign devices\" button and select a device."
             )
             self._stop(1)
-        self.logger.info("Starting the app...")
+        log.info("Starting the app...")
         sleep(2)
-        self.logger.info("Starting streams...")
+        log.info("Starting streams...")
         self.init_streams()
-        self.logger.info("Starting Robot")
-        self.robot.start()
+        log.info("Starting Robot")
+        self.robot = Robot()
         
     def on_stop(self):
         self.logger.info("Stopping the app...")
