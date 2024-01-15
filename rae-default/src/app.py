@@ -57,7 +57,7 @@ class Application(robothub.RobotHubApplication):
 
     def on_start(self):
         if not robothub.DEVICES:
-            self.logger.error(
+            log.error(
                 "The default app requires an assigned device to run. "
                 "Please go to RobotHub, navigate to the app's page, "
                 "click the \"Reassign devices\" button and select a device."
@@ -71,10 +71,10 @@ class Application(robothub.RobotHubApplication):
         self.robot = Robot()
         
     def on_stop(self):
-        self.logger.info("Stopping the app...")
+        log.info("Stopping the app...")
         self.robot.stop()
         if self.device:
-            self.logger.info("Closing device")
+            log.info("Closing device")
             self.device.close()
             
     def init_streams(self):

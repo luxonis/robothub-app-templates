@@ -16,4 +16,4 @@ redirectToIndex = true
 
 [runtime.runs_on]
 type = "image"
-name = "pull ghcr.io/luxonis/rae-ros:v0.2.0-humble"
+name = "ghcr.io/luxonis/rae-ros:v0.2.0-humble"
