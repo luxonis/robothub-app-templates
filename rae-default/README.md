@@ -1,8 +1,8 @@
 # Video Streams
 
-This App uploads a DepthAI pipeline to RAE and streams each camera output to RobotHub.
+This App launches robot class and uploads a DepthAI pipeline to RAE to stream each camera output to RobotHub.
 
-You can easily replace with you desired sockets that what to be streamed in `streams` dictionary. Also for configuring the pipeline you can edit `build_pipeline()`, such as resolution, fps and more. 
+You can easily replace with you desired sockets that what to be streamed in `streams` dictionary. Also for configuring the pipeline you can edit `build_pipeline()`, such as resolution, fps and more. On how to work with Robot class, please refer to [RAE SDK Docs](https://docs-beta.luxonis.com/develop/use-with-ros/rae-sdk/).
 
 ## Requirements
 
@@ -10,4 +10,4 @@ You can easily replace with you desired sockets that what to be streamed in `str
 
 ## Usage
 
-- Assign devices to the App and launch it, one stream will be started.
+- Assign devices to the App and launch it.
