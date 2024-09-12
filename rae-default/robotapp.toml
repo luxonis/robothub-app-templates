@@ -2,13 +2,13 @@ config_version = "2.0"
 configuration = []
 
 [info]
-name = "RAE Streaming Application"
-description = "Streams all cameras"
+name = "RAE Default App"
+description = "Default App for RAE"
 
 [runtime]
 application = "src/app.py#Application"
 workdir = "/app"
-pre_launch = "export ROS_DOMAIN_ID=30\n. /opt/ros/$ROS_DISTRO/setup.sh\n. /ws/install/setup.sh && export LD_LIBRARY_PATH=/usr/local/lib/python3.10/dist-packages${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+pre_launch = "export ROS_DOMAIN_ID=30\n. /opt/ros/$ROS_DISTRO/setup.sh\n. /ws/install/setup.sh"
 permissions = ["rae-peripherals"]
 
 [runtime.frontend]
@@ -16,4 +16,4 @@ redirectToIndex = true
 
 [runtime.runs_on]
 type = "image"
-name = "luxonis/rae-ros-robot:dai_ros_py_base"
+name = "ghcr.io/luxonis/rae-ros:v0.2.0-humble"
